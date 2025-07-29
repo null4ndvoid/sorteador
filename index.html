@@ -1,131 +1,494 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sorteador de Cidades</title>
+  <title>Sorteador de Cidades | Interface Digital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary: #ffffff;
+      --secondary: #888888;
+      --accent: #cccccc;
+      --dark-bg: #0a0a0a;
+      --darker-bg: #000000;
+      --card-bg: rgba(15, 15, 15, 0.95);
+      --border-color: rgba(255, 255, 255, 0.15);
+      --glow: rgba(255, 255, 255, 0.1);
+    }
+
     body {
-      background-color: #1e1e1e;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--darker-bg);
+      font-family: 'Roboto Mono', monospace;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
-      color: white;
+      color: var(--primary);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Digital Background Pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        repeating-linear-gradient(0deg, var(--border-color) 0px, var(--border-color) 1px, transparent 1px, transparent 10px),
+        repeating-linear-gradient(90deg, var(--border-color) 0px, var(--border-color) 1px, transparent 1px, transparent 10px);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.3;
+    }
+
+    /* Code/Matrix Pattern */
+    body::after {
+      content: '10010111 01001010 11101010 00101101';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      justify-content: space-around;
+      color: var(--border-color);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      line-height: 1;
+      letter-spacing: -1px;
+      word-spacing: 4px;
+      opacity: 0.1;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
     }
 
     .container {
+      position: relative;
+      z-index: 10;
       text-align: center;
-      background-color: #2c2c2c;
-      padding: 40px 20px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      background: var(--card-bg);
+      padding: 3rem 2rem;
+      border-radius: 4px;
       width: 90%;
-      max-width: 500px;
-      transition: background-color 0.5s ease;
+      max-width: 600px;
+      border: 1px solid var(--border-color);
+      box-shadow: 
+        0 0 20px rgba(0, 0, 0, 0.7),
+        inset 0 0 20px rgba(0, 0, 0, 0.4);
     }
 
     h1 {
-      font-size: 6vw;
-      margin-bottom: 30px;
-      color: #ffffff;
+      font-family: 'Share Tech Mono', monospace;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    h1::before {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      filter: blur(2px);
+      opacity: 0.7;
+      animation: glitch 0.3s infinite;
+      opacity: 0;
+    }
+
+    @keyframes glitch {
+      0%, 90%, 100% { opacity: 0; }
+      95% { 
+        opacity: 0.8;
+        transform: translate(1px, -1px);
+      }
+    }
+
+    .button-container {
+      position: relative;
+      margin: 2rem 0;
     }
 
     button {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 15px 30px;
-      font-size: 5vw;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      background: rgba(30, 30, 30, 0.8);
+      border: 1px solid var(--border-color);
+      color: var(--primary);
+      padding: 1rem 2.5rem;
+      font-size: clamp(1rem, 4vw, 1.4rem);
+      font-family: 'Roboto Mono', monospace;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
       width: 100%;
-      max-width: 300px;
+      max-width: 350px;
+      cursor: pointer;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 1px;
+      background: var(--primary);
+      transition: left 0.5s;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    button:hover {
+      background: rgba(40, 40, 40, 0.8);
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: translateY(0);
     }
 
     button:disabled {
-      background-color: #777;
+      background: rgba(20, 20, 20, 0.4);
+      border-color: var(--secondary);
+      color: var(--secondary);
       cursor: not-allowed;
+      transform: none;
+    }
+
+    button:disabled::before {
+      display: none;
     }
 
     #resultado {
-      margin-top: 30px;
-      font-size: 6vw;
-      font-weight: bold;
-      color: #ccc;
-      min-height: 40px;
+      margin-top: 2rem;
+      font-size: clamp(1.2rem, 5vw, 1.8rem);
+      font-weight: 700;
+      font-family: 'Share Tech Mono', monospace;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-color);
+      background: rgba(10, 10, 10, 0.6);
+      padding: 1rem;
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+    }
+
+    #resultado.cidade-alta {
+      border-color: rgba(255, 255, 255, 0.4);
+      background: rgba(40, 40, 40, 0.6);
+    }
+
+    #resultado.cidade-baixa {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(25, 25, 25, 0.6);
     }
 
     #avisos {
-      margin-top: 15px;
-      color: orange;
-      font-size: 3.8vw;
+      margin-top: 1.5rem;
+      color: var(--secondary);
+      font-size: clamp(0.8rem, 3vw, 1rem);
+      font-family: 'Roboto Mono', monospace;
+      line-height: 1.6;
     }
 
-    @media (min-width: 600px) {
-      h1 { font-size: 24px; }
-      button { font-size: 18px; }
-      #resultado { font-size: 22px; }
-      #avisos { font-size: 14px; }
+    /* Scanline Effect */
+    .scanline {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      animation: scanlineMove 4s linear infinite;
+      z-index: 100;
+    }
+
+    @keyframes scanlineMove {
+      0% { transform: translateY(-10px); opacity: 0; }
+      10% { opacity: 0.8; }
+      50% { opacity: 0.5; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(400px); opacity: 0; }
+    }
+
+    /* Static Noise Effect */
+    .static {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="a"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .1 0"/></filter><rect width="100%" height="100%" filter="url(%23a)"/></svg>');
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Digital Counter & Binary */
+    .digital-effects {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      font-size: 9px;
+      color: var(--secondary);
+      font-family: 'Share Tech Mono', monospace;
+      text-align: right;
+      opacity: 0.7;
+    }
+
+    .binary-data {
+      position: absolute;
+      bottom: -10px;
+      left: -10px;
+      font-size: 8px;
+      color: var(--secondary);
+      font-family: 'Share Tech Mono', monospace;
+      opacity: 0.5;
+    }
+
+    /* Mobile Optimizations */
+    @media (max-width: 768px) {
+      .container {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+      }
+      
+      h1 {
+        letter-spacing: 1px;
+      }
+      
+      button {
+        padding: 0.8rem 2rem;
+        letter-spacing: 1px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 1.5rem 1rem;
+      }
+      
+      h1 {
+        letter-spacing: 0px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container" id="container">
-    <h1>Sorteador de Cidades</h1>
-    <button id="botaoSortear" onclick="sortear()">Sortear Agora</button>
-    <div id="resultado">Resultado: ???</div>
+  <div class="container">
+    <div class="scanline"></div>
+    <div class="static"></div>
+    <div class="digital-effects">SYS.ID.3642_1</div>
+    <div class="binary-data">01110011 01101111 01110010 01110100 01100101 01101001 01101111</div>
+    
+    <h1 data-text="Sorteador de Cidades">Sorteador de Cidades</h1>
+    
+    <div class="button-container">
+      <button id="botaoSortear" onclick="sortear()">
+        <span id="botaoTexto">Iniciar Sorteio</span>
+      </button>
+    </div>
+    
+    <div id="resultado">Sistema Pronto - Aguardando Comando</div>
     <div id="avisos"></div>
   </div>
 
   <script>
-    let sorteiosFeitos = parseInt(localStorage.getItem("sorteiosFeitos") || 0);
-    let tirouCidadeAlta = localStorage.getItem("tirouCidadeAlta") === "true";
+    let sorteiosFeitos = localStorage.getItem("sorteiosFeitos") || 0;
+    sorteiosFeitos = parseInt(sorteiosFeitos);
 
     const botao = document.getElementById("botaoSortear");
+    const botaoTexto = document.getElementById("botaoTexto");
     const aviso = document.getElementById("avisos");
     const resultadoDiv = document.getElementById("resultado");
-    const container = document.getElementById("container");
 
-    function bloquearSorteio(msg, corFundo = "#2c2c2c") {
-      botao.disabled = true;
-      container.style.backgroundColor = corFundo;
-      aviso.innerText = msg;
-    }
-
-    if (tirouCidadeAlta) {
-      resultadoDiv.textContent = "Resultado: Cidade Alta";
-      resultadoDiv.style.color = "crimson";
-      bloquearSorteio("Você tirou Cidade Alta. Sorteio encerrado permanentemente.", "#550000");
-    } else if (sorteiosFeitos >= 2) {
-      bloquearSorteio("Você já usou suas 2 tentativas. Este sorteio está bloqueado permanentemente.");
-      resultadoDiv.textContent = "🔒 Sorteio bloqueado.";
+    // Initialize interface
+    function initializeInterface() {
+      if (sorteiosFeitos >= 2) {
+        botao.disabled = true;
+        botaoTexto.textContent = "Sistema Bloqueado";
+        aviso.innerHTML = "⚠️ ACESSO NEGADO ⚠️<br>Limite de tentativas excedido.<br>Sistema bloqueado permanentemente.";
+        resultadoDiv.textContent = "🔒 ACESSO RESTRITO";
+        resultadoDiv.className = "";
+      } else {
+        aviso.innerHTML = `Tentativas restantes: ${2 - sorteiosFeitos}/2`;
+      }
     }
 
     function sortear() {
-      if (sorteiosFeitos >= 2 || tirouCidadeAlta) return;
+      if (sorteiosFeitos >= 2) return;
 
-      const resultado = Math.random() < 0.99 ? "Cidade Baixa" : "Cidade Alta";
-      resultadoDiv.textContent = "Resultado: " + resultado;
+      // Loading animation
+      botao.disabled = true;
+      botaoTexto.textContent = "Processando...";
+      resultadoDiv.textContent = "ANALISANDO DADOS...";
+      
+      // Create typing animation
+      let dots = '';
+      const typingInterval = setInterval(() => {
+        dots = dots.length >= 3 ? '' : dots + '.';
+        resultadoDiv.textContent = `ANALISANDO DADOS${dots}`;
+      }, 300);
 
-      if (resultado === "Cidade Alta") {
-        resultadoDiv.style.color = "crimson";
-        tirouCidadeAlta = true;
-        localStorage.setItem("tirouCidadeAlta", "true");
-        bloquearSorteio("Você tirou Cidade Alta. Sorteio encerrado permanentemente.", "#550000");
-      } else {
-        resultadoDiv.style.color = "lightgreen";
-        sorteiosFeitos++;
-        localStorage.setItem("sorteiosFeitos", sorteiosFeitos);
-        if (sorteiosFeitos >= 2) {
-          bloquearSorteio("Você já usou suas 2 tentativas. Este sorteio está bloqueado permanentemente.");
+      // Simulate processing time
+      setTimeout(() => {
+        clearInterval(typingInterval);
+        const resultado = Math.random() < 0.99 ? "Cidade Baixa" : "Cidade Alta";
+        
+        // Digital counting effect
+        let count = 0;
+        const countMax = 20;
+        const countInterval = setInterval(() => {
+          if (count >= countMax) {
+            clearInterval(countInterval);
+            resultadoDiv.innerHTML = `<span style="font-size: 0.8em;">RESULTADO:</span><br>${resultado}`;
+            
+            if (resultado === "Cidade Alta") {
+              resultadoDiv.className = "cidade-alta";
+            } else {
+              resultadoDiv.className = "cidade-baixa";
+            }
+
+            sorteiosFeitos++;
+            localStorage.setItem("sorteiosFeitos", sorteiosFeitos);
+
+            if (sorteiosFeitos >= 2) {
+              botaoTexto.textContent = "Sistema Bloqueado";
+              aviso.innerHTML = "⚠️ ACESSO NEGADO ⚠️<br>Limite de tentativas excedido.<br>Sistema bloqueado permanentemente.";
+            } else {
+              botao.disabled = false;
+              botaoTexto.textContent = "Sortear Novamente";
+              aviso.innerHTML = `Tentativas restantes: ${2 - sorteiosFeitos}/2`;
+            }
+          } else {
+            count++;
+            const randomCity = Math.random() < 0.5 ? "CIDADE ALTA" : "CIDADE BAIXA";
+            resultadoDiv.textContent = `PROCESSANDO: ${randomCity}`;
+          }
+        }, 50);
+      }, 1500);
+    }
+
+    // Initialize on load
+    initializeInterface();
+
+    // Add glitch effect randomly
+    setInterval(() => {
+      if (Math.random() < 0.1) { // 10% chance every 2 seconds
+        document.querySelector('h1').style.animation = 'glitch 0.3s ease-in-out';
+        setTimeout(() => {
+          document.querySelector('h1').style.animation = '';
+        }, 300);
+      }
+    }, 2000);
+
+    // Add digital noise effect
+    function createNoise() {
+      const noise = document.createElement('div');
+      noise.className = 'noise-pixel';
+      
+      // Random position
+      const x = Math.floor(Math.random() * window.innerWidth);
+      const y = Math.floor(Math.random() * window.innerHeight);
+      
+      // Random size (1-3px)
+      const size = Math.floor(Math.random() * 3) + 1;
+      
+      // Random opacity
+      const opacity = Math.random() * 0.1;
+      
+      noise.style.cssText = `
+        position: fixed;
+        width: ${size}px;
+        height: ${size}px;
+        background: white;
+        top: ${y}px;
+        left: ${x}px;
+        opacity: ${opacity};
+        pointer-events: none;
+        z-index: 1000;
+      `;
+      
+      document.body.appendChild(noise);
+      
+      // Remove after random time
+      setTimeout(() => {
+        noise.remove();
+      }, Math.random() * 1000 + 100);
+    }
+
+    // Create noise at intervals
+    setInterval(createNoise, 100);
+
+    // Add click effect
+    botao.addEventListener('click', function(e) {
+      if (this.disabled) return;
+      
+      const clickEffect = document.createElement('span');
+      const rect = this.getBoundingClientRect();
+      const x = e.clientX - rect.left - 10;
+      const y = e.clientY - rect.top - 10;
+      
+      clickEffect.style.cssText = `
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border: 1px solid white;
+        left: ${x}px;
+        top: ${y}px;
+        animation: clickEffect 0.5s ease-out forwards;
+        pointer-events: none;
+      `;
+      
+      this.appendChild(clickEffect);
+      
+      setTimeout(() => {
+        clickEffect.remove();
+      }, 500);
+    });
+
+    // Add click animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes clickEffect {
+        0% {
+          transform: scale(0.5);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.5);
+          opacity: 0;
         }
       }
-    }
+    `;
+    document.head.appendChild(style);
   </script>
 </body>
 </html>
